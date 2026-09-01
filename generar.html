@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generar Invitación · XV Años de Jennifer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Allura&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --peach:#f2b48c; --peach-deep:#d98b5f; --peach-light:#fcd9c0;
+    --rose:#f3aec0; --rose-deep:#c4718c; --rose-light:#fbd9e2;
+    --cream:#fff8f3; --warm:#fdeadd; --text:#4a2f33;
+    --text-muted:#8a6a6f; --serif:'Cormorant Garamond',serif;
+    --script:'Allura',cursive; --sans:'Montserrat',sans-serif;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+  body {
+    font-family:var(--sans);
+    background:radial-gradient(circle at 50% 40%,#f7c3a4 0%,#e79bad 55%,#b4627d 100%);
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:2rem 1rem;
+  }
+
+  .card {
+    background:#fff;
+    border-radius:12px;
+    padding:2.8rem 2.4rem 2.4rem;
+    width:100%; max-width:460px;
+    box-shadow:0 32px 80px rgba(90,40,50,.45);
+    text-align:center;
+  }
+
+  .card-eyebrow {
+    font-size:.52rem; letter-spacing:.44em; text-transform:uppercase;
+    color:var(--rose-deep); margin-bottom:.6rem; font-weight:600;
+  }
+  .card-hr {
+    width:40px; height:1px; margin:.6rem auto;
+    background:linear-gradient(90deg,transparent,var(--peach),transparent);
+  }
+  .card-title {
+    font-family:var(--script);
+    font-size:clamp(2rem,6vw,2.8rem);
+    color:var(--text); line-height:1.1;
+    margin-bottom:.2rem;
+  }
+  .card-sub {
+    font-size:.52rem; letter-spacing:.38em; text-transform:uppercase;
+    color:var(--text-muted); margin-bottom:2rem; font-weight:600;
+  }
+
+  /* FORM */
+  .form-group { text-align:left; margin-bottom:1.2rem; }
+  .form-group label {
+    display:block;
+    font-size:.55rem; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--rose-deep); margin-bottom:.45rem; font-weight:600;
+  }
+  .form-group input, .form-group select {
+    width:100%;
+    padding:.72rem 1rem;
+    border:1px solid rgba(242,180,140,.5);
+    border-radius:8px;
+    font-family:var(--serif); font-size:1rem;
+    color:var(--text);
+    background:var(--cream);
+    outline:none;
+    transition:border-color .25s;
+  }
+  .form-group input:focus, .form-group select:focus { border-color:var(--rose); }
+  .form-group input::placeholder { color:#d3b3ae; }
+
+  .btn-generar {
+    width:100%; padding:.85rem;
+    background:linear-gradient(120deg,var(--peach),var(--rose));
+    border:none; border-radius:50px;
+    color:#fff; font-family:var(--sans);
+    font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; font-weight:700;
+    cursor:pointer; margin-top:.4rem;
+    transition:filter .3s, transform .15s;
+  }
+  .btn-generar:hover { filter:brightness(1.06); }
+  .btn-generar:active { transform:scale(.98); }
+
+  /* RESULTADO */
+  #resultado {
+    display:none;
+    margin-top:1.8rem;
+    border-top:1px solid rgba(242,180,140,.3);
+    padding-top:1.6rem;
+  }
+  #resultado.visible { display:block; }
+
+  .res-label {
+    font-size:.52rem; letter-spacing:.35em; text-transform:uppercase;
+    color:var(--rose-deep); margin-bottom:.75rem; font-weight:600;
+  }
+  .res-family {
+    font-family:var(--script);
+    font-size:clamp(1.5rem,5vw,2rem);
+    color:var(--text); margin-bottom:.2rem;
+  }
+  .res-boletos {
+    font-size:.62rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--peach-deep); margin-bottom:1.1rem;
+  }
+
+  .url-box {
+    background:var(--cream);
+    border:1px solid rgba(242,180,140,.4);
+    border-radius:8px;
+    padding:.75rem 1rem;
+    font-family:var(--serif); font-size:.82rem;
+    color:var(--text-muted);
+    word-break:break-all; text-align:left;
+    margin-bottom:1rem;
+    user-select:all;
+  }
+  .msg-label {
+    font-size:.5rem; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--rose-deep); margin-bottom:.4rem; text-align:left; font-weight:600;
+  }
+  .msg-box {
+    background:var(--cream);
+    border:1px solid rgba(242,180,140,.4);
+    border-radius:8px;
+    padding:.85rem 1rem;
+    font-family:var(--sans); font-size:.78rem; line-height:1.6;
+    color:var(--text);
+    text-align:left; white-space:pre-wrap; word-break:break-word;
+    margin-bottom:1rem;
+    user-select:all;
+  }
+
+  .btn-row { display:flex; gap:.75rem; }
+  .btn-copy, .btn-open {
+    flex:1; padding:.7rem;
+    border:none; border-radius:50px;
+    font-family:var(--sans);
+    font-size:.58rem; letter-spacing:.26em; text-transform:uppercase; font-weight:600;
+    cursor:pointer;
+    transition:background .3s, transform .15s;
+  }
+  .btn-copy {
+    background:transparent;
+    border:1px solid var(--rose);
+    color:var(--rose-deep);
+  }
+  .btn-copy:hover { background:rgba(243,174,192,.14); }
+  .btn-copy.copied { background:rgba(243,174,192,.2); color:var(--rose-deep); }
+  .btn-open { background:linear-gradient(120deg,var(--peach),var(--rose)); color:#fff; }
+  .btn-open:hover { filter:brightness(1.06); }
+  .btn-copy:active, .btn-open:active { transform:scale(.97); }
+
+  .btn-nueva {
+    width:100%; margin-top:.85rem; padding:.7rem;
+    background:transparent; border:1px dashed rgba(242,180,140,.7);
+    border-radius:50px;
+    font-family:var(--sans); font-size:.56rem; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--text-muted); cursor:pointer;
+    transition:background .3s, color .3s, border-color .3s;
+  }
+  .btn-nueva:hover { background:rgba(242,180,140,.12); color:var(--peach-deep); border-color:var(--peach); }
+
+  .btn-confirmaciones {
+    display:inline-flex; align-items:center; gap:.5rem;
+    margin-top:1.75rem; padding:.75rem 1.5rem;
+    border:1px solid rgba(255,255,255,.7); border-radius:50px;
+    background:rgba(255,255,255,.15);
+    font-family:var(--sans); font-size:.6rem; letter-spacing:.26em; text-transform:uppercase; font-weight:600;
+    color:#fff; text-decoration:none;
+    transition:background .3s, color .3s;
+  }
+  .btn-confirmaciones:hover { background:#fff; color:var(--rose-deep); }
+
+  @media(max-width:480px){
+    .card { padding:2rem 1.4rem 1.8rem; }
+    .btn-row { flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <p class="card-eyebrow">✦ &nbsp;Generador de Invitaciones &nbsp;✦</p>
+  <div class="card-hr"></div>
+  <h1 class="card-title">Jennifer Casillas</h1>
+  <p class="card-sub">XV Años · 02 · 10 · 2026</p>
+
+  <div class="form-group">
+    <label>Tipo de saludo</label>
+    <select id="inputTipo">
+      <option value="familia" selected>Familia</option>
+      <option value="estimado">Estimado</option>
+      <option value="estimada">Estimada</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Nombre de la familia / invitado</label>
+    <input type="text" id="inputFamilia" placeholder="Ej: García López" autocomplete="off">
+  </div>
+
+  <div class="form-group">
+    <label>Número de boletos</label>
+    <select id="inputBoletos">
+      <option value="" selected>&nbsp;</option>
+      <option value="1">1 boleto</option>
+      <option value="2">2 boletos</option>
+      <option value="3">3 boletos</option>
+      <option value="4">4 boletos</option>
+      <option value="5">5 boletos</option>
+      <option value="6">6 boletos</option>
+      <option value="7">7 boletos</option>
+      <option value="8">8 boletos</option>
+      <option value="9">9 boletos</option>
+      <option value="10">10 boletos</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Mesa <span style="text-transform:none;letter-spacing:0;opacity:.7">(opcional)</span></label>
+    <input type="text" id="inputMesa" placeholder="Ej: 5" autocomplete="off">
+  </div>
+
+  <button class="btn-generar" onclick="generar()">Generar Invitación &nbsp;✦</button>
+
+  <!-- Resultado -->
+  <div id="resultado">
+    <p class="res-label" id="resLabel">Enlace generado para:</p>
+    <p class="res-family" id="resFamilyName"></p>
+    <p class="res-boletos" id="resBoletosText"></p>
+    <div class="url-box" id="resUrl"></div>
+    <p class="msg-label">Mensaje listo para enviar:</p>
+    <div class="msg-box" id="resMensaje"></div>
+    <div class="btn-row">
+      <button class="btn-copy" id="btnCopy" onclick="copiarMensaje()">Copiar mensaje</button>
+      <button class="btn-open" onclick="abrirInvitacion()">Abrir ✦</button>
+    </div>
+    <button class="btn-nueva" onclick="nuevaInvitacion()">↻ Generar otra invitación</button>
+  </div>
+</div>
+
+<a class="btn-confirmaciones" href="https://docs.google.com/spreadsheets/d/1tr90tJAXZwcghC9WfADvlYSIwRoeMkyoP0I6vCq8yks/edit?usp=sharing" target="_blank" rel="noopener">
+  📋 Ver confirmaciones
+</a>
+
+<script>
+  var urlGenerada = '';
+  var mensajeGenerado = '';
+
+  var tipoLabels = { familia:'Familia', estimado:'Estimado', estimada:'Estimada' };
+
+  function construirMensaje(familia, tipo, n, mesa, url){
+    var saludo = tipoLabels[tipo] + ' ' + familia;
+    var pase = '';
+    if(n){
+      pase = 'PASE PARA ' + n + (n === 1 ? ' PERSONA' : ' PERSONAS') + ' 🎟️';
+      if(mesa) pase += '\nMESA ' + mesa + ' 🍽️';
+      pase += '\n';
+    }
+    return '¡Hola! ✨ ' + saludo + '\n' +
+      'Celebro mis XV años y quiero invitarte a compartir esta noche conmigo. 👑\n' +
+      'Espero poder contar con tu presencia. 💐\n\n' +
+      pase +
+      'Click para ver la invitación. 💌\n' +
+      url + '\n\n' +
+      'Por favor confirma tu asistencia antes del 11 de Septiembre. 🙏';
+  }
+
+  function generar(){
+    var familia = document.getElementById('inputFamilia').value.trim();
+    var tipo = document.getElementById('inputTipo').value;
+    var boletos = document.getElementById('inputBoletos').value;
+    var mesa = document.getElementById('inputMesa').value.trim();
+
+    if(!familia){
+      document.getElementById('inputFamilia').focus();
+      document.getElementById('inputFamilia').style.borderColor = '#c97a6e';
+      setTimeout(function(){ document.getElementById('inputFamilia').style.borderColor = ''; }, 1500);
+      return;
+    }
+
+    var base;
+    if(window.location.href.indexOf('generar.html') !== -1){
+      base = window.location.href.replace('generar.html','index.html');
+    } else {
+      base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/index.html');
+    }
+    urlGenerada = base + '?f=' + encodeURIComponent(familia) + '&t=' + tipo;
+    if(boletos) urlGenerada += '&b=' + boletos;
+    if(mesa) urlGenerada += '&m=' + encodeURIComponent(mesa);
+
+    var n = boletos ? parseInt(boletos, 10) : 0;
+    mensajeGenerado = construirMensaje(familia, tipo, n, mesa, urlGenerada);
+
+    document.getElementById('resLabel').textContent = 'Enlace generado para (' + tipoLabels[tipo] + '):';
+    document.getElementById('resFamilyName').textContent = familia;
+    document.getElementById('resBoletosText').textContent = (n ? (n + (n === 1 ? ' boleto' : ' boletos')) : 'Sin boletos') + (mesa ? ' · Mesa ' + mesa : '');
+    document.getElementById('resUrl').textContent = urlGenerada;
+    document.getElementById('resMensaje').textContent = mensajeGenerado;
+
+    var res = document.getElementById('resultado');
+    res.classList.add('visible');
+    res.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+    var btn = document.getElementById('btnCopy');
+    btn.textContent = 'Copiar mensaje';
+    btn.classList.remove('copied');
+  }
+
+  function copiarMensaje(){
+    if(!mensajeGenerado) return;
+    navigator.clipboard.writeText(mensajeGenerado).then(function(){
+      var btn = document.getElementById('btnCopy');
+      btn.textContent = '¡Copiado! ✓';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'Copiar mensaje'; btn.classList.remove('copied'); }, 2500);
+    });
+  }
+
+  function abrirInvitacion(){
+    if(urlGenerada) window.open(urlGenerada, '_blank');
+  }
+
+  function nuevaInvitacion(){
+    document.getElementById('inputFamilia').value = '';
+    document.getElementById('inputTipo').value = 'familia';
+    document.getElementById('inputBoletos').value = '';
+    document.getElementById('inputMesa').value = '';
+    urlGenerada = '';
+    mensajeGenerado = '';
+
+    var res = document.getElementById('resultado');
+    res.classList.remove('visible');
+
+    document.querySelector('.card').scrollIntoView({ behavior:'smooth', block:'start' });
+    document.getElementById('inputFamilia').focus();
+  }
+
+  // Permitir Enter en el campo de familia
+  document.getElementById('inputFamilia').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') generar();
+  });
+</script>
+</body>
+</html>

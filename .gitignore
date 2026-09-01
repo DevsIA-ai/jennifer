@@ -1,0 +1,12 @@
+# Archivos originales duplicados (ya copiados como foto*.jpeg y moonlight.mp3)
+WhatsApp Image*.jpeg
+Moonlight (1).mp3
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Siluetas ya no usadas (vestimenta formal o casual, sin imagenes)
+traje.png
+vestido.png

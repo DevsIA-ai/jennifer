@@ -64,8 +64,8 @@ body { font-family: var(--sans); background: var(--cream); color: var(--text); o
 .divider-orn::after { background: linear-gradient(90deg, rgba(242,180,140,0.85), var(--rose) 60%, transparent); }
 
 /* Raya decorativa rosa/durazno entre secciones */
-#story, #details, #itinerary, #gallery, #dresscode, #gifts, #rsvp, #contact, #despedida { position:relative; }
-#story::after, #details::after, #itinerary::after, #gallery::after,
+#padrinos, #story, #details, #itinerary, #gallery, #dresscode, #gifts, #rsvp, #contact, #despedida { position:relative; }
+#padrinos::after, #story::after, #details::after, #itinerary::after, #gallery::after,
 #dresscode::after, #gifts::after, #rsvp::after, #contact::after, #despedida::after {
   content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
   width:min(88%, 640px); height:2px; pointer-events:none;
@@ -302,6 +302,21 @@ body { font-family: var(--sans); background: var(--cream); color: var(--text); o
 }
 .detail-card-lbl { font-size:.56rem; letter-spacing:.4em; text-transform:uppercase; color:var(--rose-deep); margin-bottom:.6rem; font-weight:600; }
 .detail-card-val { font-family:var(--serif); font-size:1.55rem; font-weight:600; color:var(--peach-deep); line-height:1.4; }
+
+/* Cards de mamá y padrinos */
+#padrinos { background:linear-gradient(160deg,var(--cream),var(--blush)); text-align:center; }
+.parent-card {
+  background:linear-gradient(160deg,var(--warm),var(--rose-light));
+  border:1px solid rgba(242,180,140,.55);
+  border-radius:10px; padding:2.75rem 2rem;
+  text-align:center; position:relative;
+  box-shadow:0 6px 26px rgba(243,174,192,.22);
+  transition:transform .35s, box-shadow .35s;
+}
+.parent-card:hover { transform:translateY(-4px); box-shadow:0 12px 34px rgba(243,174,192,.32); }
+.parent-card-icon { color:var(--peach-deep); font-size:.9rem; margin-bottom:1.1rem; letter-spacing:.3em; }
+.parent-card-lbl { font-size:.58rem; letter-spacing:.45em; text-transform:uppercase; color:var(--rose-deep); display:block; margin-bottom:1rem; font-weight:600; }
+.parent-card-names { font-family:var(--serif); font-style:italic; font-size:1.35rem; font-weight:500; color:var(--text); line-height:1.85; }
 
 .map-box {
   width:100%; height:300px; border-radius:8px;
@@ -848,6 +863,7 @@ body.env-open { overflow:hidden; }
 <nav id="nav-dots">
   <button class="nav-dot active" onclick="goTo('hero')"></button>
   <button class="nav-dot" onclick="goTo('countdown')"></button>
+  <button class="nav-dot" onclick="goTo('padrinos')"></button>
   <button class="nav-dot" onclick="goTo('story')"></button>
   <button class="nav-dot" onclick="goTo('details')"></button>
   <button class="nav-dot" onclick="goTo('itinerary')"></button>
@@ -961,6 +977,28 @@ body.env-open { overflow:hidden; }
   <p class="reveal" style="position:relative;z-index:1;font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(1.15rem,2.8vw,1.45rem);color:#fff;max-width:560px;margin:3rem auto 0;line-height:1.9;">
     "Hoy dejo atrás a la niña que fui,<br>para abrazar a la mujer en la que me estoy convirtiendo."
   </p>
+</section>
+
+<!-- ======================== MAMÁ Y PADRINOS ======================== -->
+<section id="padrinos">
+  <div class="container">
+    <span class="eyebrow reveal">Con Amor</span>
+    <h2 class="section-title reveal">Con la bendición de <em>mi mamá y mis padrinos</em></h2>
+    <svg class="ornament-divider" role="presentation"><use href="#ornDivider"></use></svg>
+
+    <div class="detail-cards" style="max-width:640px;margin-left:auto;margin-right:auto;">
+      <div class="parent-card reveal">
+        <div class="parent-card-icon">✦</div>
+        <span class="parent-card-lbl">Mi mamá</span>
+        <p class="parent-card-names">Araceli Pérez</p>
+      </div>
+      <div class="parent-card reveal d1">
+        <div class="parent-card-icon" style="color:var(--rose-deep)">✦</div>
+        <span class="parent-card-lbl">Mis padrinos</span>
+        <p class="parent-card-names">Filomena Villalobos<br>Fernando Loza</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ======================== MIS XV AÑOS ======================== -->
@@ -1451,7 +1489,7 @@ const revObs = new IntersectionObserver(entries => {
 revEls.forEach(el => revObs.observe(el));
 
 /* ---- NAV DOTS ---- */
-const SECS = ['hero','countdown','story','details','itinerary','gallery','dresscode','gifts','rsvp','contact'];
+const SECS = ['hero','countdown','padrinos','story','details','itinerary','gallery','dresscode','gifts','rsvp','contact'];
 const dots = document.querySelectorAll('.nav-dot');
 function goTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
 const secObs = new IntersectionObserver(entries => {
